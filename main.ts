@@ -16,7 +16,11 @@ const level7: level = { order: 1, dist: 20, dif: difficulty.HARD };
 const level8: level = { order: 2, dist: 50, dif: difficulty.HARD };
 const level9: level = { order: 3, dist: 100, dif: difficulty.HARD };
 
+let brightness = 40
+let obrightness = brightness - 30
+
 let player: game.LedSprite = game.createSprite(2, 4)
+player.set(LedSpriteProperty.Brightness, brightness)
 
 input.onButtonPressed(Button.A, function(){
     player.move(-1)
@@ -33,6 +37,7 @@ function spawn(level:level,index:number) {
             let chance = 6 - level.order
             if (Math.randomRange(0, chance - 1) == 1) {
                 let o = game.createSprite(x, 0)
+                o.set(LedSpriteProperty.Brightness, obrightness)
                 control.inBackground(function(){
                     for (let oi: number = 0; oi < 5; oi += 1) {
                         basic.pause(500)
@@ -51,6 +56,7 @@ function spawn(level:level,index:number) {
             let chance = 5 - level.order
             if (Math.randomRange(0, chance - 1) == 1) {
                 let o = game.createSprite(x, 0)
+                o.set(LedSpriteProperty.Brightness, obrightness)
                 control.inBackground(function(){
                     for (let oi: number = 0; oi < 5; oi += 1) {
                         basic.pause(300)
@@ -69,6 +75,7 @@ function spawn(level:level,index:number) {
             let chance = 4 - level.order
             if (Math.randomRange(0, chance - 1) == 1) {
                 let o = game.createSprite(x, 0)
+                o.set(LedSpriteProperty.Brightness, obrightness)
                 control.inBackground(function(){
                     for (let oi: number = 0; oi < 5; oi += 1) {
                         basic.pause(200)
