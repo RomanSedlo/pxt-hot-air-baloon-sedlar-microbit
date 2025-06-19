@@ -102,10 +102,12 @@ function spawn(level:level,index:number) {
             control.inBackground(function () {
                 for (let oi: number = 0; oi < 5; oi += 1) {
                     basic.pause(difRest)
+                    if(stop) {
+                        o.delete()
+                    }
                     if (player.isTouching(o) && inLevel) {
                         gameover(level)
                     }
-
                     o.change(LedSpriteProperty.Y, 1)
                     if (oi === 4) {
                         o.delete()
@@ -125,6 +127,9 @@ function play(level: level) {
             break;
         }
     }
+    basic.pause(2400)
+    basic.showString("YOU WON!", rollSpeed*1.2)
+    stop = true
 }
 
 chosenLevel = level1
