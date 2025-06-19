@@ -31,6 +31,10 @@ let inMenus: boolean = true;
 let inLevel: boolean = false;
 let inGameOver: boolean = false;
 
+let difSpeed: number;
+let difChance: number;
+let difRest: number;
+
 input.onButtonPressed(Button.A, function(){
     if (inLevel) {
         player.move(-1)
@@ -54,7 +58,6 @@ input.onButtonPressed(Button.B, function () {
     }
 })
 
-
 function gameover(level:level) {
     inLevel = false
     stop = true
@@ -75,80 +78,42 @@ function gameover(level:level) {
 function spawn(level:level,index:number) {
     player.set(LedSpriteProperty.Brightness, brightness);
     if(level.dif === difficulty.EASY) {
-        for (let x = 0; x < 5; x += 1) {
-            if (stop === true) {
-                break;
-            }
-            basic.pause((level.dist - index) * 9)
-            let chance = 6 - level.order
-            if (Math.randomRange(0, chance - 1) == 1) {
-                let o = game.createSprite(x, 0)
-                o.set(LedSpriteProperty.Brightness, obrightness)
-                control.inBackground(function(){
-                    for (let oi: number = 0; oi < 5; oi += 1) {
-                        if (player.isTouching(o) && inLevel) {
-                            gameover(level)
-                        }
-                        basic.pause(500)
-                        o.change(LedSpriteProperty.Y, 1)
-                        if (oi === 4) {
-                            o.delete()
-                        }
-                    }
-                })
-            }
-            basic.pause(200)
-        }
+        difChance = 6
+        difSpeed = 9
+        difRest = 500
     } else if (level.dif === difficulty.MEDIUM) {
-        for (let x = 0; x < 5; x += 1) {
-            if (stop === true) {
-                break;
-            }
-            basic.pause((level.dist - index) * 8)
-            let chance = 5 - level.order
-            if (Math.randomRange(0, chance - 1) == 1) {
-                let o = game.createSprite(x, 0)
-                o.set(LedSpriteProperty.Brightness, obrightness)
-                control.inBackground(function(){
-                    for (let oi: number = 0; oi < 5; oi += 1) {
-                        if (player.isTouching(o) && inLevel) {
-                            gameover(level)
-                        }
-                        basic.pause(300)
-                        o.change(LedSpriteProperty.Y, 1)
-                        if (oi === 4) {
-                            o.delete()
-                        }
-                    }
-                })
-            }
-            basic.pause(200)
-        }
+        difChance = 5
+        difSpeed = 8
+        difRest = 300
     } else if (level.dif === difficulty.HARD) {
-        for (let x = 0; x < 5; x += 1) {
-            if (stop === true) {
-                break;
-            }
-            basic.pause((level.dist - index) * 7)
-            let chance = 4 - level.order
-            if (Math.randomRange(0, chance - 1) == 1) {
-                let o = game.createSprite(x, 0)
-                o.set(LedSpriteProperty.Brightness, obrightness)
-                control.inBackground(function(){
-                    for (let oi: number = 0; oi < 5; oi += 1) {
-                        basic.pause(200)
-                        if (player.isTouching(o) && inLevel) {
-                            gameover(level)
-                        }
-                        o.change(LedSpriteProperty.Y, 1)
-                        if (oi === 4) {
-                            o.delete()
-                        }
-                    }
-                })
-            }
-            basic.pause(200)
+        difChance = 4
+        difSpeed = 7
+        difRest = 200
+    }
+    for (let x = 0; x < 5; x += 1) {
+        if (stop === true) {
+            break;
         }
+        basic.pause((level.dist - index) * difSpeed)
+        let chance = difChance - level.order
+        if (Math.randomRange(0, chance - 1) == 1) {
+            let o = game.createSprite(x, 0)
+            o.set(LedSpriteProperty.Brightness, obrightness)
+            control.inBackground(function () {
+                for (let oi: number = 0; oi < 5; oi += 1) {
+                    basic.pause(difRest)
+                    if (player.isTouching(o) && inLevel) {
+                        gameover(level)
+                    }
+
+                    o.change(LedSpriteProperty.Y, 1)
+                    if (oi === 4) {
+                        o.delete()
+                    }
+                }
+            })
+        }
+        basic.pause(200)
     }
 }
 
