@@ -1,20 +1,20 @@
-enum difficulty { EASY, MEDIUM, HARD };
+enum gameDifficulty { EASY, MEDIUM, HARD };
 
 type level = {
     dist: number,
-    dif: difficulty
+    dif: gameDifficulty
 };
 
 const levels: Array<level> = [
-    { dist: 20, dif: difficulty.EASY },
-    { dist: 40, dif: difficulty.EASY },
-    { dist: 60, dif: difficulty.EASY },
-    { dist: 40, dif: difficulty.MEDIUM },
-    { dist: 80, dif: difficulty.MEDIUM },
-    { dist: 120, dif: difficulty.MEDIUM },
-    { dist: 50, dif: difficulty.HARD },
-    { dist: 100, dif: difficulty.HARD },
-    { dist: 200, dif: difficulty.HARD }
+    { dist: 20, dif: gameDifficulty.EASY },
+    { dist: 40, dif: gameDifficulty.EASY },
+    { dist: 60, dif: gameDifficulty.EASY },
+    { dist: 40, dif: gameDifficulty.MEDIUM },
+    { dist: 80, dif: gameDifficulty.MEDIUM },
+    { dist: 120, dif: gameDifficulty.MEDIUM },
+    { dist: 50, dif: gameDifficulty.HARD },
+    { dist: 100, dif: gameDifficulty.HARD },
+    { dist: 200, dif: gameDifficulty.HARD }
 ]
 
 let selectedLevel: level;
@@ -69,11 +69,11 @@ function menu(): number {
     inMenu = true
     player.set(LedSpriteProperty.Brightness, 0)
     if (!startSignal) {
-        menuLoop: while (true) {
+        while (true) {
             basic.showNumber(shownLevel + 1, 50)
             basic.pause(50)
             if (startSignal) {
-                break menuLoop;
+                break;
             }
         }
     }
@@ -100,22 +100,22 @@ function gameover(level: level) {
 
 function spawn(level: level, index: number) {
     player.set(LedSpriteProperty.Brightness, brightness);
-    if (level.dif === difficulty.EASY) {
+    if (level.dif === gameDifficulty.EASY) {
         difChance = 5
         difSpeed = 9
         difRest = 500
-    } else if (level.dif === difficulty.MEDIUM) {
+    } else if (level.dif === gameDifficulty.MEDIUM) {
         difChance = 4
         difSpeed = 8
         difRest = 300
-    } else if (level.dif === difficulty.HARD) {
+    } else if (level.dif === gameDifficulty.HARD) {
         difChance = 3
         difSpeed = 7
         difRest = 200
     }
-    levelLoop: for (let x = 0; x < 5; x += 1) {
+    for (let x = 0; x < 5; x += 1) {
         if (inGameOver) {
-            break levelLoop;
+            break;
         }
         basic.pause(difRest / 10)
         if (Math.randomRange(0, difChance - 1) == 1) {
@@ -143,10 +143,10 @@ function spawn(level: level, index: number) {
 
 function play(level: level) {
     inLevel = true
-    playLoop: for (let i: number = 0; i < level.dist; i += 1) {
+    for (let i: number = 0; i < level.dist; i += 1) {
         spawn(level, i)
         if (stop) {
-            break playLoop;
+            break;
         }
         if (i === level.dist - 1) {
             basic.pause(2500)
