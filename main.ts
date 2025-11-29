@@ -35,6 +35,8 @@ let inMenu: boolean = true;
 let inLevel: boolean = false;
 let inGameOver: boolean = false;
 
+let justGameOver: boolean = false;
+
 let difSpeed: number;
 let difChance: number;
 let difRest: number;
@@ -60,7 +62,7 @@ input.onButtonPressed(Button.B, function () {
 })
 
 input.onButtonPressed(Button.AB, function () {
-    if (inMenu || inGameOver) {
+    if (inMenu) {
         startSignal = true
     }
 })
@@ -124,17 +126,16 @@ function spawn(level: level, index: number) {
             control.inBackground(function () {
                 for (let oi: number = 0; oi < 5; oi += 1) {
                     basic.pause(difRest)
-                    if (stop) {
-                        o.delete()
-                    }
+                    if (stop) o.delete()
                     if (player.isTouching(o) && inLevel) {
-                        gameover(level)
+                        justGameOver = true
+                        player.set(LedSpriteProperty.Brightness, 0)
+                        break;
                     }
                     o.change(LedSpriteProperty.Y, 1)
-                    if (oi === 4) {
-                        o.delete()
-                    }
+                    if (oi === 4) o.delete()
                 }
+                if (justGameOver) gameover(level)
             })
         }
         basic.pause(((level.dist - index) / difSpeed) + (difRest))
